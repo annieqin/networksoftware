@@ -1,0 +1,39 @@
+<html>
+<head>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+	var ws = new WebSocket('ws://localhost:9000/sendTask');
+	ws.onopen = function(openEvent) {
+		console.log("websocket connected");
+	};
+
+	ws.onmessage = function(messageEvent) {
+		var data = messageEvent.data;
+		if(data) {
+	    	document.getElementById('message').innerHTML = data;
+		}
+	};
+	ws.onclose = function(closeEvent) {
+		console.log("websocket closed")
+	}
+	function sendTask() {
+		var optype = document.getElementsByName("optype")[0].value
+		var destination = document.getElementsByName("destination")[0].value
+		var formdata = '{\"optype\":\"'+optype+'\",\"destination\":\"'+destination+'\"}'
+		ws.send(formdata)
+		return true;
+	}
+</script>
+</head>
+<body>
+<form action="#"  method="post" onsubmit="return sendTask()" id="sendtask">
+<select name="optype">
+	<option value="ping">ping</option>
+	<option value="traceroute">traceroute</option>
+</select>
+<input type="text" name="destination"/>
+<input type="submit" value="submit" />
+</form>
+<div id="message"></div>
+</body>
+</html>

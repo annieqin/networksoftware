@@ -1,0 +1,50 @@
+<html>
+<head>
+	<meta charset="utf-8">  
+    <title>Response Time</title>  
+	<style type="text/css">
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        width : 600px;
+        height: 384px;
+        margin: 8px auto;
+      }
+    </style>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+	<input id="data" type="hidden" value="{{data}}">
+	<input id="xticks" type="hidden" value="{{xticks}}">
+	<div id="container"></div>
+	
+	<script type="text/javascript" src="/static/js/flotr2.min.js"></script>
+	<script type="text/javascript">
+		(function() {
+			var container = document.getElementById("container");
+			var xticks = $("#xticks").val();
+			xticks = JSON.parse(xticks.replace(/'/g, '"'));
+			var data = JSON.parse($("#data").val());
+			var options = {
+				title:"Response Time of Different Websites", 
+				xaxis: {
+					title: "Websites",
+					ticks: xticks
+				},
+				yaxis: {
+					title: "ResponseTime (ms)",
+					titleAngle: 90,
+		            max : 200, 
+		            min : 0
+	            },
+	            mouse: {
+	            	track: true
+	            }
+			};
+			Flotr.draw(container, data, options);
+		})();
+	</script>
+</body>
+</html>
